@@ -65,15 +65,34 @@ input[type="text"]:focus {
 #summary {
   border: 2px dashed var(--border-color);
   padding: 2rem;
-  text-align: center;
   background-color: var(--accent);
   margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem; /* Space between the two main rows */
+  align-items: center;
+}
+
+.summary-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 4rem; /* Space between the stat groups */
+  flex-wrap: wrap;
+}
+
+/* This is the magic part */
+.stat-group {
+  display: flex;
+  flex-direction: column; /* Stacks label over number */
+  align-items: center; /* Centers them horizontally */
+  text-align: center;
 }
 
 .summary-stat {
-  font-size: 2rem;
+  font-size: 2rem; /* Made slightly larger for emphasis */
   font-weight: bold;
-  margin: 0.5rem 0;
+  line-height: 1.6;
 }
 
 #results {
@@ -102,6 +121,14 @@ input[type="text"]:focus {
 .category-tag {
   background-color: var(--border-color);
   color: var(--container-bg);
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+.sheet-tag {
+  background-color: var(--container-bg);
+  color: var(--border-color);
+  border: 1px solid var(--border-color);
   padding: 2px 8px;
   font-size: 0.8rem;
   text-transform: uppercase;
