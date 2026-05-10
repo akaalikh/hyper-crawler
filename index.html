@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File Index Search</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <link rel="stylesheet" href="./styles.css" type="text/css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header-container">
+        <h1>HYPER CRAWLER</h1>
+        <span id="syncStatus" class="sync-status">Syncing...</span>
+      </div>
+
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search by file name or category..."
+        autocomplete="off"
+      />
+
+      <div id="summary">
+        <div>Total Indexed Files</div>
+        <div class="summary-stat" id="totalFiles">0</div>
+        <div style="margin-top: 1rem">Total Storage Footprint</div>
+        <div class="summary-stat" id="totalSize">0 B</div>
+      </div>
+
+      <ul id="results" class="hidden"></ul>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
