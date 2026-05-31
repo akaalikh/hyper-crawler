@@ -6,9 +6,11 @@ const COURSES_CSV_URL = `${BASE_URL}&gid=291500461`;
 const SYNC_INTERVAL_MS = 300000;
 
 let combinedData = [];
+let currentTypeFilter = "All"; // New state variable
 
 // DOM Elements
 const searchInput = document.getElementById("searchInput");
+const filterRadios = document.querySelectorAll('input[name="typeFilter"]');
 const resultsContainer = document.getElementById("results");
 const summaryContainer = document.getElementById("summary");
 const syncStatus = document.getElementById("syncStatus");
@@ -19,7 +21,6 @@ const totalSizeEl = document.getElementById("totalSize");
 
 // --- Data Fetching & Sync ---
 
-// Helper function to fetch a specific tab
 function fetchSheet(url, type) {
   return new Promise((resolve, reject) => {
     const bypassCacheUrl = `${url}&t=${new Date().getTime()}`;
@@ -28,7 +29,6 @@ function fetchSheet(url, type) {
       header: true,
       skipEmptyLines: true,
       complete: (results) => {
-        // Tag the rows so we know where they came from
         const dataWithType = results.data.map((row) => ({
           ...row,
           _sourceType: type,
@@ -42,21 +42,18 @@ function fetchSheet(url, type) {
 
 async function loadData() {
   syncStatus.textContent = "Syncing...";
-
   try {
-    // Fetch both tabs at the same time
     const [softwares, courses] = await Promise.all([
       fetchSheet(SOFTWARE_CSV_URL, "Software"),
       fetchSheet(COURSES_CSV_URL, "Course"),
     ]);
 
-    // Merge them together
     combinedData = [...softwares, ...courses];
-
     updateSummary();
 
-    if (searchInput.value.trim() !== "") {
-      handleSearch();
+    // Re-apply filters after sync
+    if (searchInput.value.trim() !== "" || currentTypeFilter !== "All") {
+      applyFilters();
     }
 
     const now = new Date();
@@ -103,10 +100,10 @@ function updateSummary() {
     (row) => row._sourceType === "Course",
   ).length;
 
-  // Update DOM elements
   softwaresCountEl.textContent = softwareCount;
   coursesCountEl.textContent = courseCount;
   totalFilesEl.textContent = combinedData.length;
+
   let totalBytes = 0;
   combinedData.forEach((row) => {
     totalBytes += parseSizeToBytes(row["Size"] || "0");
@@ -114,10 +111,11 @@ function updateSummary() {
   totalSizeEl.textContent = formatBytes(totalBytes);
 }
 
-function handleSearch() {
+function applyFilters() {
   const query = searchInput.value.toLowerCase().trim();
 
-  if (!query) {
+  // Show summary if everything is default
+  if (!query && currentTypeFilter === "All") {
     summaryContainer.classList.remove("hidden");
     resultsContainer.classList.add("hidden");
     return;
@@ -129,7 +127,11 @@ function handleSearch() {
   const filteredData = combinedData.filter((row) => {
     const fileName = (row["File Name"] || "").toLowerCase();
     const category = (row["Category"] || "").toLowerCase();
-    return fileName.includes(query) || category.includes(query);
+    const matchesQuery = fileName.includes(query) || category.includes(query);
+    const matchesType =
+      currentTypeFilter === "All" || row._sourceType === currentTypeFilter;
+
+    return matchesQuery && matchesType;
   });
 
   renderResults(filteredData);
@@ -147,8 +149,6 @@ function renderResults(data) {
   data.slice(0, 100).forEach((row) => {
     const li = document.createElement("li");
     li.className = "result-item";
-
-    // UI: Software gets a blue tag, Courses get green
     const typeClass =
       row._sourceType === "Software" ? "tag-soft" : "tag-course";
 
@@ -177,7 +177,16 @@ function debounce(func, delay) {
   };
 }
 
+// --- Event Listeners ---
+searchInput.addEventListener("input", debounce(applyFilters, 300));
+
+filterRadios.forEach((radio) => {
+  radio.addEventListener("change", (e) => {
+    currentTypeFilter = e.target.value;
+    applyFilters();
+  });
+});
+
 // --- Init ---
-searchInput.addEventListener("input", debounce(handleSearch, 300));
 loadData();
 setInterval(loadData, SYNC_INTERVAL_MS);

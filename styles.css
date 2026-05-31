@@ -145,3 +145,15 @@ input[type="text"]:focus {
 .hidden {
   display: none !important;
 }
+.filter-container {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 1.5rem;
+  justify-content: center;
+}
+
+.filter-option {
+  cursor: pointer;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
