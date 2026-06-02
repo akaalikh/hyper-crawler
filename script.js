@@ -1,6 +1,8 @@
 const BASE_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vQU7gjhliDaRfEa4I5GAhMkB3n6xW5cWcgx_CaidVG81xv1pW1ddSuR5i8reg64g2wVJrLrIx1f3RbP/pub?output=csv";
 
+const GOOGLE_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbzVjC5qVW8DSxqBBFUUSou15JptS9zp9M0FHSory_WEZxqkiQrG7bXI8YwrhMuiRe2a/exec";
 const SOFTWARE_CSV_URL = `${BASE_URL}&gid=0`;
 const COURSES_CSV_URL = `${BASE_URL}&gid=291500461`;
 const SYNC_INTERVAL_MS = 300000;
@@ -18,6 +20,12 @@ const softwaresCountEl = document.getElementById("softwaresCount");
 const coursesCountEl = document.getElementById("coursesCount");
 const totalFilesEl = document.getElementById("totalFiles");
 const totalSizeEl = document.getElementById("totalSize");
+const requestModal = document.getElementById("requestModal");
+const closeModal = document.getElementById("closeModal");
+const requestForm = document.getElementById("requestForm");
+const requestInput = document.getElementById("requestInput");
+const requestNotes = document.getElementById("requestNotes");
+const requestStatus = document.getElementById("requestStatus");
 
 // --- Data Fetching & Sync ---
 
@@ -141,8 +149,19 @@ function renderResults(data) {
   resultsContainer.innerHTML = "";
 
   if (data.length === 0) {
-    resultsContainer.innerHTML =
-      '<li class="result-item">No matches found.</li>';
+    resultsContainer.innerHTML = `
+      <li class="result-item" style="text-align: center; padding: 2rem;">
+        <p style="margin-bottom: 1rem;">No matches found for "<strong>${searchInput.value}</strong>".</p>
+        <button id="openRequestBtn" class="request-btn">MAKE A REQUEST</button>
+      </li>
+    `;
+
+    document.getElementById("openRequestBtn").addEventListener("click", () => {
+      requestModal.classList.remove("hidden");
+      requestInput.value = searchInput.value;
+      requestStatus.classList.add("hidden");
+      requestStatus.textContent = "";
+    });
     return;
   }
 
@@ -185,6 +204,68 @@ filterRadios.forEach((radio) => {
     currentTypeFilter = e.target.value;
     applyFilters();
   });
+});
+
+// --- Request Modal Logic ---
+
+closeModal.addEventListener("click", () => {
+  requestModal.classList.add("hidden");
+});
+
+requestModal.addEventListener("click", (e) => {
+  if (e.target === requestModal) {
+    requestModal.classList.add("hidden");
+  }
+});
+
+requestForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const requestedFile = requestInput.value.trim();
+  const notes = requestNotes.value.trim();
+
+  if (!requestedFile) return;
+
+  const submitBtn = requestForm.querySelector(".submit-btn");
+  submitBtn.textContent = "SENDING...";
+  submitBtn.disabled = true;
+
+  try {
+    // We send as plain text to avoid CORS preflight issues with Google Apps Script
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8",
+      },
+      body: JSON.stringify({
+        fileName: requestedFile,
+        notes: notes,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (result.status === "success") {
+      requestStatus.textContent = "REQUEST SENT SUCCESSFULLY.";
+      requestStatus.style.color = "green";
+      requestStatus.classList.remove("hidden");
+      requestForm.reset();
+
+      setTimeout(() => {
+        requestModal.classList.add("hidden");
+      }, 2000);
+    } else {
+      throw new Error(result.message);
+    }
+  } catch (error) {
+    console.error("Submission failed:", error);
+    requestStatus.textContent = "FAILED TO SEND. TRY AGAIN.";
+    requestStatus.style.color = "red";
+    requestStatus.classList.remove("hidden");
+  } finally {
+    submitBtn.textContent = "SEND REQUEST";
+    submitBtn.disabled = false;
+  }
 });
 
 // --- Init ---

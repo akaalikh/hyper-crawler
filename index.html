@@ -58,6 +58,28 @@
 
       <ul id="results" class="hidden"></ul>
     </div>
+    <div id="requestModal" class="modal hidden">
+      <div class="modal-content">
+        <span id="closeModal" class="close-btn">&times;</span>
+        <h2>MAKE A REQUEST</h2>
+        <p>Didn't find what you need? Request it below.</p>
+        <form id="requestForm">
+          <input
+            type="text"
+            id="requestInput"
+            placeholder="FILE NAME OR CATEGORY..."
+            required
+          />
+          <textarea
+            id="requestNotes"
+            placeholder="ADDITIONAL NOTES (OPTIONAL)..."
+            rows="3"
+          ></textarea>
+          <button type="submit" class="submit-btn">SEND REQUEST</button>
+        </form>
+        <div id="requestStatus" class="hidden"></div>
+      </div>
+    </div>
 
     <script src="./script.js"></script>
   </body>
