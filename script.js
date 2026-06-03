@@ -26,6 +26,7 @@ const requestForm = document.getElementById("requestForm");
 const requestInput = document.getElementById("requestInput");
 const requestNotes = document.getElementById("requestNotes");
 const requestStatus = document.getElementById("requestStatus");
+const requestEmail = document.getElementById("requestEmail");
 
 // --- Data Fetching & Sync ---
 
@@ -222,16 +223,16 @@ requestForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const requestedFile = requestInput.value.trim();
+  const email = requestEmail.value.trim();
   const notes = requestNotes.value.trim();
 
-  if (!requestedFile) return;
+  if (!requestedFile || !email) return;
 
   const submitBtn = requestForm.querySelector(".submit-btn");
   submitBtn.textContent = "SENDING...";
   submitBtn.disabled = true;
 
   try {
-    // We send as plain text to avoid CORS preflight issues with Google Apps Script
     const response = await fetch(GOOGLE_SCRIPT_URL, {
       method: "POST",
       headers: {
@@ -239,6 +240,7 @@ requestForm.addEventListener("submit", async (e) => {
       },
       body: JSON.stringify({
         fileName: requestedFile,
+        email: email,
         notes: notes,
       }),
     });
