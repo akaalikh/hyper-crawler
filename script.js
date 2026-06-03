@@ -27,6 +27,7 @@ const requestInput = document.getElementById("requestInput");
 const requestNotes = document.getElementById("requestNotes");
 const requestStatus = document.getElementById("requestStatus");
 const requestEmail = document.getElementById("requestEmail");
+const generalRequestBtn = document.getElementById("generalRequestBtn");
 
 // --- Data Fetching & Sync ---
 
@@ -270,6 +271,18 @@ requestForm.addEventListener("submit", async (e) => {
   }
 });
 
+generalRequestBtn.addEventListener("click", () => {
+  // Clear the search input inside the modal so it's fresh
+  const requestInput = document.getElementById("requestInput");
+  requestInput.value = "";
+
+  // Show the modal by removing the 'hidden' class
+  const requestModal = document.getElementById("requestModal");
+  requestModal.classList.remove("hidden");
+
+  // Focus the input so the user can start typing immediately
+  requestInput.focus();
+});
 // --- Init ---
 loadData();
 setInterval(loadData, SYNC_INTERVAL_MS);

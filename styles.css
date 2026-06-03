@@ -245,3 +245,21 @@ input[type="email"]:focus {
   text-align: center;
   text-transform: uppercase;
 }
+.app-footer {
+  margin-top: 10px;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.request-text-link {
+  font-weight: bold;
+  font-size: 1rem;
+  text-transform: uppercase;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.request-text-link:hover {
+  opacity: 0.6;
+}
