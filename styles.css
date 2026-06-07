@@ -263,3 +263,63 @@ input[type="email"]:focus {
 .request-text-link:hover {
   opacity: 0.6;
 }
+@media screen and (max-width: 600px) {
+  body {
+    padding: 0.5rem; /* Reclaim space outside the container */
+  }
+
+  .container {
+    padding: 1.5rem; /* Shrink padding inside the container */
+    box-shadow: 3px 3px 0px var(--border-color); /* Slightly smaller shadow for mobile */
+  }
+
+  .header-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  h1 {
+    font-size: 1.3rem; /* Prevent huge text from wrapping awkwardly */
+  }
+
+  /* Compact the summary section */
+  #summary {
+    padding: 1.5rem 1rem;
+    gap: 1.5rem;
+  }
+
+  .summary-row {
+    gap: 1.5rem; /* Bring stats closer together */
+  }
+
+  .summary-stat {
+    font-size: 1.5rem; /* Slightly smaller numbers */
+  }
+
+  /* Fix overlapping tags in the results list */
+  .result-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  /* Make tags wrap properly if they are too long */
+  .result-header > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  /* Tweak the modal so it fits nicely on a phone */
+  .modal-content {
+    width: 95%;
+    padding: 1.5rem;
+    box-shadow: 3px 3px 0px var(--border-color);
+  }
+
+  .close-btn {
+    top: 5px;
+    right: 10px;
+  }
+}
