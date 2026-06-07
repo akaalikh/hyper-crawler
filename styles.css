@@ -24,6 +24,7 @@ body {
   border: 2px solid var(--border-color);
   box-shadow: 5px 5px 0px var(--border-color);
   padding: 2rem;
+  box-sizing: border-box; /* Ensures padding doesn't overflow width */
 }
 
 .header-container {
@@ -46,7 +47,9 @@ h1 {
   color: var(--text-muted);
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="email"],
+textarea {
   width: 100%;
   padding: 12px;
   font-family: inherit;
@@ -57,7 +60,9 @@ input[type="text"] {
   outline: none;
 }
 
-input[type="text"]:focus {
+input[type="text"]:focus,
+input[type="email"]:focus,
+textarea:focus {
   background-color: var(--accent);
 }
 
@@ -69,7 +74,7 @@ input[type="text"]:focus {
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 2.5rem; /* Space between the two main rows */
+  gap: 2.5rem;
   align-items: center;
 }
 
@@ -77,20 +82,20 @@ input[type="text"]:focus {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 4rem; /* Space between the stat groups */
+  gap: 4rem;
   flex-wrap: wrap;
+  width: 100%;
 }
 
-/* This is the magic part */
 .stat-group {
   display: flex;
-  flex-direction: column; /* Stacks label over number */
-  align-items: center; /* Centers them horizontally */
+  flex-direction: column;
+  align-items: center;
   text-align: center;
 }
 
 .summary-stat {
-  font-size: 2rem; /* Made slightly larger for emphasis */
+  font-size: 2rem;
   font-weight: bold;
   line-height: 1.6;
 }
@@ -116,6 +121,14 @@ input[type="text"]:focus {
   align-items: center;
   font-weight: bold;
   font-size: 1.1rem;
+  gap: 1rem; /* Added gap to prevent text squishing */
+}
+
+/* Added wrapper class to target the tags div cleanly */
+.result-tags {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
 }
 
 .category-tag {
@@ -124,7 +137,9 @@ input[type="text"]:focus {
   padding: 2px 8px;
   font-size: 0.8rem;
   text-transform: uppercase;
+  white-space: nowrap;
 }
+
 .sheet-tag {
   background-color: var(--container-bg);
   color: var(--border-color);
@@ -132,6 +147,7 @@ input[type="text"]:focus {
   padding: 2px 8px;
   font-size: 0.8rem;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .metadata {
@@ -145,11 +161,13 @@ input[type="text"]:focus {
 .hidden {
   display: none !important;
 }
+
 .filter-container {
   display: flex;
   gap: 15px;
   margin-bottom: 1.5rem;
   justify-content: center;
+  flex-wrap: wrap; /* Let filters wrap on narrow screens */
 }
 
 .filter-option {
@@ -157,6 +175,7 @@ input[type="text"]:focus {
   font-size: 0.9rem;
   text-transform: uppercase;
 }
+
 .modal {
   position: fixed;
   top: 0;
@@ -178,6 +197,7 @@ input[type="text"]:focus {
   width: 90%;
   max-width: 450px;
   position: relative;
+  box-sizing: border-box;
 }
 
 .close-btn {
@@ -200,26 +220,10 @@ input[type="text"]:focus {
   margin-top: 1rem;
 }
 
-textarea,
-input[type="email"] {
-  width: 100%;
-  padding: 12px;
-  font-family: inherit;
-  font-size: 1rem;
-  border: 2px solid var(--border-color);
-  box-sizing: border-box;
-  outline: none;
-}
-
 textarea {
   resize: vertical;
 }
 
-textarea:focus,
-input[type="email"]:focus {
-  background-color: var(--accent);
-}
-/* Button styling to match input fields but clickable */
 .request-btn,
 .submit-btn {
   font-family: inherit;
@@ -245,6 +249,7 @@ input[type="email"]:focus {
   text-align: center;
   text-transform: uppercase;
 }
+
 .app-footer {
   margin-top: 10px;
   text-align: center;
@@ -263,14 +268,19 @@ input[type="email"]:focus {
 .request-text-link:hover {
   opacity: 0.6;
 }
-@media screen and (max-width: 600px) {
+
+/* =========================================
+   MOBILE RESPONSIVENESS (Up to 600px)
+   ========================================= */
+@media (max-width: 600px) {
   body {
-    padding: 0.5rem; /* Reclaim space outside the container */
+    padding: 0.5rem;
+    font-size: 13px; /* Reduced baseline font size */
   }
 
   .container {
-    padding: 1.5rem; /* Shrink padding inside the container */
-    box-shadow: 3px 3px 0px var(--border-color); /* Slightly smaller shadow for mobile */
+    padding: 1rem;
+    box-shadow: 2px 2px 0px var(--border-color); /* Thinner shadow */
   }
 
   .header-container {
@@ -280,46 +290,108 @@ input[type="email"]:focus {
   }
 
   h1 {
-    font-size: 1.3rem; /* Prevent huge text from wrapping awkwardly */
+    font-size: 1.15rem; /* Smaller header */
   }
 
-  /* Compact the summary section */
+  /* Ultra-compact inputs and buttons */
+  input[type="text"],
+  input[type="email"],
+  textarea,
+  .request-btn,
+  .submit-btn {
+    font-size: 0.85rem;
+    padding: 8px; /* Tighter padding saves vertical space */
+  }
+
   #summary {
-    padding: 1.5rem 1rem;
-    gap: 1.5rem;
+    padding: 1rem;
+    gap: 1rem;
   }
 
   .summary-row {
-    gap: 1.5rem; /* Bring stats closer together */
+    gap: 1rem;
+    justify-content: space-around;
   }
 
   .summary-stat {
-    font-size: 1.5rem; /* Slightly smaller numbers */
+    font-size: 1.25rem; /* Scaled down numbers */
   }
 
-  /* Fix overlapping tags in the results list */
   .result-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
   }
 
-  /* Make tags wrap properly if they are too long */
-  .result-header > div {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+  .result-header span:first-child {
+    word-break: break-word;
+    font-size: 0.95rem; /* Slightly smaller file names */
   }
 
-  /* Tweak the modal so it fits nicely on a phone */
+  /* Shrink tags */
+  .category-tag,
+  .sheet-tag {
+    font-size: 0.7rem !important;
+    padding: 2px 6px;
+  }
+
+  .metadata {
+    font-size: 0.75rem; /* Tiny metadata text */
+    word-break: break-all;
+  }
+
   .modal-content {
-    width: 95%;
-    padding: 1.5rem;
-    box-shadow: 3px 3px 0px var(--border-color);
+    padding: 1.25rem;
+  }
+}
+
+/* =========================================
+   EXTRA SMALL SCREENS (up to 380px)
+   ========================================= */
+@media (max-width: 380px) {
+  body {
+    padding: 0;
+    font-size: 12px; /* The absolute floor for readable text */
   }
 
-  .close-btn {
-    top: 5px;
-    right: 10px;
+  .container {
+    border-left: none;
+    border-right: none;
+    box-shadow: none;
+    padding: 0.75rem 0.5rem; /* Razor-thin padding */
+  }
+
+  h1 {
+    font-size: 1rem;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    font-size: 0.75rem;
+  }
+
+  .summary-row {
+    flex-direction: column;
+    gap: 0.75rem; /* Tighten up vertical stacking */
+  }
+
+  .stat-group div:first-child {
+    font-size: 0.8rem;
+  }
+
+  .filter-container {
+    gap: 8px;
+  }
+
+  .filter-option {
+    font-size: 0.8rem;
+  }
+
+  /* Edge-to-edge modal on tiny screens */
+  .modal-content {
+    padding: 1rem 0.75rem;
+    width: 100%;
+    border-left: none;
+    border-right: none;
   }
 }

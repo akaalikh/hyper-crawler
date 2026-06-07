@@ -173,10 +173,11 @@ function renderResults(data) {
     const typeClass =
       row._sourceType === "Software" ? "tag-soft" : "tag-course";
 
+    // Added class="result-tags" to the div wrapping the span tags
     li.innerHTML = `
         <div class="result-header">
             <span>${row["File Name"] || "Unknown"}</span>
-            <div>
+            <div class="result-tags"> 
                 <span class="sheet-tag ${typeClass}">${row._sourceType}</span>
                 <span class="category-tag">${row["Category"] || "Uncategorized"}</span>
             </div>
