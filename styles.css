@@ -249,26 +249,41 @@ textarea {
   text-align: center;
   text-transform: uppercase;
 }
-
-.app-footer {
-  margin-top: 10px;
-  text-align: center;
-  padding-top: 20px;
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end; /* Keeps H1 and the bottom of the right-block aligned */
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
-.request-text-link {
+/* NEW: Layout for the right side of the header */
+.header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.2rem; /* Slight spacing between Sync and Request link */
+}
+
+/* Updated sync-status to match the new alignment */
+.sync-status {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.header-request-btn {
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 0.8rem; /* Made smaller than the original 1rem */
   text-transform: uppercase;
   text-decoration: underline;
   cursor: pointer;
   transition: opacity 0.2s ease;
+  color: var(--text-main);
 }
 
-.request-text-link:hover {
+.header-request-btn:hover {
   opacity: 0.6;
 }
-
 /* =========================================
    MOBILE RESPONSIVENESS (Up to 600px)
    ========================================= */
@@ -342,6 +357,25 @@ textarea {
 
   .modal-content {
     padding: 1.25rem;
+  }
+  .header-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+
+  /* NEW: Put sync status and request link side-by-side on mobile */
+  .header-right {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  /* Keep the request button easily tappable on mobile */
+  .header-request-btn {
+    font-size: 0.85rem;
   }
 }
 

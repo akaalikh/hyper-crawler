@@ -11,7 +11,12 @@
     <div class="container">
       <div class="header-container">
         <h1>HYPER CRAWLER</h1>
-        <span id="syncStatus" class="sync-status">Syncing...</span>
+        <div class="header-right">
+          <span id="syncStatus" class="sync-status">Syncing...</span>
+          <span id="generalRequestBtn" class="header-request-btn"
+            >Make a Request</span
+          >
+        </div>
       </div>
 
       <input
@@ -58,11 +63,6 @@
       </div>
 
       <ul id="results" class="hidden"></ul>
-      <div class="app-footer">
-        <span id="generalRequestBtn" class="request-text-link"
-          >SEND A REQUEST</span
-        >
-      </div>
     </div>
     <div id="requestModal" class="modal hidden">
       <div class="modal-content">
