@@ -250,20 +250,17 @@ requestForm.addEventListener("submit", async (e) => {
     const result = await response.json();
 
     if (result.status === "success") {
-      requestStatus.textContent = "REQUEST SENT SUCCESSFULLY.";
+      requestStatus.textContent =
+        "Request sent. You will get a replay from us within 3 days on your email.";
       requestStatus.style.color = "green";
       requestStatus.classList.remove("hidden");
       requestForm.reset();
-
-      setTimeout(() => {
-        requestModal.classList.add("hidden");
-      }, 2000);
     } else {
       throw new Error(result.message);
     }
   } catch (error) {
     console.error("Submission failed:", error);
-    requestStatus.textContent = "FAILED TO SEND. TRY AGAIN.";
+    requestStatus.textContent = "Failed to Send. Try Again.";
     requestStatus.style.color = "red";
     requestStatus.classList.remove("hidden");
   } finally {
