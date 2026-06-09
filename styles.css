@@ -1,3 +1,19 @@
+@font-face {
+  font-family: "Montserrat-Bold";
+  src: url("./fonts/Montserrat-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Montserrat-Regular";
+  src: url("./fonts/Montserrat-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --bg-color: #e0e0e0;
   --container-bg: #ffffff;
@@ -5,10 +21,12 @@
   --text-main: #000000;
   --text-muted: #555555;
   --accent: #f0f0f0;
+  --font-regular: "Montserrat-Regular", sans-serif;
+  --font-bold: "Montserrat-Bold", sans-serif;
 }
 
 body {
-  font-family: "Courier New", Courier, monospace;
+  font-family: var(--font-regular);
   background-color: var(--bg-color);
   color: var(--text-main);
   padding: 2rem;
@@ -17,14 +35,21 @@ body {
   justify-content: center;
 }
 
+h1,
+h2,
+.result-header > span:first-child,
+.summary-stat {
+  font-family: var(--font-bold);
+}
+
 .container {
   width: 100%;
   max-width: 800px;
   background: var(--container-bg);
   border: 2px solid var(--border-color);
   box-shadow: 5px 5px 0px var(--border-color);
-  padding: 2rem;
-  box-sizing: border-box; /* Ensures padding doesn't overflow width */
+  padding: 2rem 2rem 1rem 2rem;
+  box-sizing: border-box;
 }
 
 .header-container {
@@ -43,7 +68,7 @@ h1 {
 }
 
 .sync-status {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
 }
 
@@ -66,7 +91,6 @@ textarea:focus {
   background-color: var(--accent);
 }
 
-/* Summary Box Styling */
 #summary {
   border: 2px dashed var(--border-color);
   padding: 2rem;
@@ -121,10 +145,9 @@ textarea:focus {
   align-items: center;
   font-weight: bold;
   font-size: 1.1rem;
-  gap: 1rem; /* Added gap to prevent text squishing */
+  gap: 1rem;
 }
 
-/* Added wrapper class to target the tags div cleanly */
 .result-tags {
   display: flex;
   gap: 5px;
@@ -136,8 +159,9 @@ textarea:focus {
   color: var(--container-bg);
   padding: 2px 8px;
   font-size: 0.8rem;
-  text-transform: uppercase;
+  text-transform: capitalize;
   white-space: nowrap;
+  font-family: var(--font-regular);
 }
 
 .sheet-tag {
@@ -146,8 +170,9 @@ textarea:focus {
   border: 1px solid var(--border-color);
   padding: 2px 8px;
   font-size: 0.8rem;
-  text-transform: uppercase;
+  text-transform: capitalize;
   white-space: nowrap;
+  font-family: var(--font-regular);
 }
 
 .metadata {
@@ -167,13 +192,13 @@ textarea:focus {
   gap: 15px;
   margin-bottom: 1.5rem;
   justify-content: center;
-  flex-wrap: wrap; /* Let filters wrap on narrow screens */
+  flex-wrap: wrap;
 }
 
 .filter-option {
   cursor: pointer;
   font-size: 0.9rem;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .modal {
@@ -234,7 +259,7 @@ textarea {
   color: var(--text-main);
   border: 2px solid var(--border-color);
   cursor: pointer;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .request-btn:hover,
@@ -247,33 +272,21 @@ textarea {
   margin-top: 1rem;
   font-weight: bold;
   text-align: center;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
+
 .header-container {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end; /* Keeps H1 and the bottom of the right-block aligned */
+  align-items: flex-end;
   border-bottom: 2px solid var(--border-color);
   padding-bottom: 0.5rem;
   margin-bottom: 1.5rem;
 }
 
-/* NEW: Layout for the right side of the header */
-.header-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.2rem; /* Slight spacing between Sync and Request link */
-}
-
-/* Updated sync-status to match the new alignment */
-.sync-status {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
 .header-request-btn {
   font-weight: bold;
-  font-size: 0.8rem; /* Made smaller than the original 1rem */
+  font-size: 0.8rem;
   text-transform: uppercase;
   text-decoration: underline;
   cursor: pointer;
@@ -284,18 +297,16 @@ textarea {
 .header-request-btn:hover {
   opacity: 0.6;
 }
-/* =========================================
-   MOBILE RESPONSIVENESS (Up to 600px)
-   ========================================= */
+
 @media (max-width: 600px) {
   body {
     padding: 0.5rem;
-    font-size: 13px; /* Reduced baseline font size */
+    font-size: 13px;
   }
 
   .container {
     padding: 1rem;
-    box-shadow: 2px 2px 0px var(--border-color); /* Thinner shadow */
+    box-shadow: 2px 2px 0px var(--border-color);
   }
 
   .header-container {
@@ -305,17 +316,16 @@ textarea {
   }
 
   h1 {
-    font-size: 1.15rem; /* Smaller header */
+    font-size: 1.15rem;
   }
 
-  /* Ultra-compact inputs and buttons */
   input[type="text"],
   input[type="email"],
   textarea,
   .request-btn,
   .submit-btn {
     font-size: 0.85rem;
-    padding: 8px; /* Tighter padding saves vertical space */
+    padding: 8px;
   }
 
   #summary {
@@ -329,7 +339,7 @@ textarea {
   }
 
   .summary-stat {
-    font-size: 1.25rem; /* Scaled down numbers */
+    font-size: 1.25rem;
   }
 
   .result-header {
@@ -340,10 +350,9 @@ textarea {
 
   .result-header span:first-child {
     word-break: break-word;
-    font-size: 0.95rem; /* Slightly smaller file names */
+    font-size: 0.95rem;
   }
 
-  /* Shrink tags */
   .category-tag,
   .sheet-tag {
     font-size: 0.7rem !important;
@@ -351,48 +360,36 @@ textarea {
   }
 
   .metadata {
-    font-size: 0.75rem; /* Tiny metadata text */
+    font-size: 0.75rem;
     word-break: break-all;
   }
 
   .modal-content {
     padding: 1.25rem;
   }
+
   .header-container {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.8rem;
   }
 
-  /* NEW: Put sync status and request link side-by-side on mobile */
-  .header-right {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    gap: 1rem;
-  }
-
-  /* Keep the request button easily tappable on mobile */
   .header-request-btn {
-    font-size: 0.85rem;
+    font-size: 0.7rem;
   }
 }
 
-/* =========================================
-   EXTRA SMALL SCREENS (up to 380px)
-   ========================================= */
 @media (max-width: 380px) {
   body {
     padding: 0;
-    font-size: 12px; /* The absolute floor for readable text */
+    font-size: 12px;
   }
 
   .container {
     border-left: none;
     border-right: none;
     box-shadow: none;
-    padding: 0.75rem 0.5rem; /* Razor-thin padding */
+    padding: 0.75rem 0.5rem;
   }
 
   h1 {
@@ -406,7 +403,7 @@ textarea {
 
   .summary-row {
     flex-direction: column;
-    gap: 0.75rem; /* Tighten up vertical stacking */
+    gap: 0.75rem;
   }
 
   .stat-group div:first-child {
@@ -421,7 +418,6 @@ textarea {
     font-size: 0.8rem;
   }
 
-  /* Edge-to-edge modal on tiny screens */
   .modal-content {
     padding: 1rem 0.75rem;
     width: 100%;
