@@ -8,7 +8,7 @@ const COURSES_CSV_URL = `${BASE_URL}&gid=291500461`;
 const SYNC_INTERVAL_MS = 300000;
 
 let combinedData = [];
-let currentTypeFilter = "All"; // New state variable
+let currentTypeFilter = "All"; 
 
 // DOM Elements
 const searchInput = document.getElementById("searchInput");
@@ -61,7 +61,6 @@ async function loadData() {
     combinedData = [...softwares, ...courses];
     updateSummary();
 
-    // Re-apply filters after sync
     if (searchInput.value.trim() !== "" || currentTypeFilter !== "All") {
       applyFilters();
     }
@@ -124,7 +123,6 @@ function updateSummary() {
 function applyFilters() {
   const query = searchInput.value.toLowerCase().trim();
 
-  // Show summary if everything is default
   if (!query && currentTypeFilter === "All") {
     summaryContainer.classList.remove("hidden");
     resultsContainer.classList.add("hidden");
@@ -152,9 +150,9 @@ function renderResults(data) {
 
   if (data.length === 0) {
     resultsContainer.innerHTML = `
-      <li class="result-item" style="text-align: center; padding: 2rem;">
-        <p style="margin-bottom: 1rem;">No matches found for "<strong>${searchInput.value}</strong>".</p>
-        <button id="openRequestBtn" class="request-btn">MAKE A REQUEST</button>
+      <li class="result-item" style="text-align: center; padding: 3rem 1rem; border: none;">
+        <p style="margin-bottom: 1.5rem; color: var(--text-muted);">No matches found for "<strong>${searchInput.value}</strong>".</p>
+        <button id="openRequestBtn" class="request-btn">Make a Request</button>
       </li>
     `;
 
@@ -170,21 +168,18 @@ function renderResults(data) {
   data.slice(0, 100).forEach((row) => {
     const li = document.createElement("li");
     li.className = "result-item";
-    const typeClass =
-      row._sourceType === "Software" ? "tag-soft" : "tag-course";
 
-    // Added class="result-tags" to the div wrapping the span tags
     li.innerHTML = `
         <div class="result-header">
             <span>${row["File Name"] || "Unknown"}</span>
             <div class="result-tags"> 
-                <span class="sheet-tag ${typeClass}">${row._sourceType}</span>
+                <span class="sheet-tag">${row._sourceType}</span>
                 <span class="category-tag">${row["Category"] || "Uncategorized"}</span>
             </div>
         </div>
         <div class="metadata">
-            <span>Size: ${row["Size"] || "Unknown"}</span>
-            <span>Path: ${row["Path"] || "Unknown"}</span>
+            <span><strong>Size:</strong> ${row["Size"] || "Unknown"}</span>
+            <span><strong>Path:</strong> ${row["Path"] || "Unknown"}</span>
         </div>
     `;
     resultsContainer.appendChild(li);
@@ -231,7 +226,7 @@ requestForm.addEventListener("submit", async (e) => {
   if (!requestedFile || !email) return;
 
   const submitBtn = requestForm.querySelector(".submit-btn");
-  submitBtn.textContent = "SENDING...";
+  submitBtn.textContent = "Sending...";
   submitBtn.disabled = true;
 
   try {
@@ -251,8 +246,8 @@ requestForm.addEventListener("submit", async (e) => {
 
     if (result.status === "success") {
       requestStatus.textContent =
-        "Request sent. You will get a replay from us within 3 days on your email.";
-      requestStatus.style.color = "green";
+        "Request sent. You will get a reply within 3 days to your email.";
+      requestStatus.style.color = "#2e7d32"; /* Muted green */
       requestStatus.classList.remove("hidden");
       requestForm.reset();
     } else {
@@ -261,26 +256,22 @@ requestForm.addEventListener("submit", async (e) => {
   } catch (error) {
     console.error("Submission failed:", error);
     requestStatus.textContent = "Failed to Send. Try Again.";
-    requestStatus.style.color = "red";
+    requestStatus.style.color = "#c62828"; /* Muted red */
     requestStatus.classList.remove("hidden");
   } finally {
-    submitBtn.textContent = "SEND REQUEST";
+    submitBtn.textContent = "Send Request";
     submitBtn.disabled = false;
   }
 });
 
 generalRequestBtn.addEventListener("click", () => {
-  // Clear the search input inside the modal so it's fresh
   const requestInput = document.getElementById("requestInput");
   requestInput.value = "";
-
-  // Show the modal by removing the 'hidden' class
   const requestModal = document.getElementById("requestModal");
   requestModal.classList.remove("hidden");
-
-  // Focus the input so the user can start typing immediately
   requestInput.focus();
 });
+
 // --- Init ---
 loadData();
 setInterval(loadData, SYNC_INTERVAL_MS);
