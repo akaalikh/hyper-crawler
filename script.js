@@ -28,6 +28,7 @@ const requestNotes = document.getElementById("requestNotes");
 const requestStatus = document.getElementById("requestStatus");
 const requestEmail = document.getElementById("requestEmail");
 const generalRequestBtn = document.getElementById("generalRequestBtn");
+const clearSearchBtn = document.getElementById("clearSearchBtn");
 
 // --- Data Fetching & Sync ---
 
@@ -196,6 +197,21 @@ function debounce(func, delay) {
 
 // --- Event Listeners ---
 searchInput.addEventListener("input", debounce(applyFilters, 300));
+
+searchInput.addEventListener("input", () => {
+  if (searchInput.value.trim().length > 0) {
+    clearSearchBtn.classList.remove("hidden");
+  } else {
+    clearSearchBtn.classList.add("hidden");
+  }
+});
+
+clearSearchBtn.addEventListener("click", () => {
+  searchInput.value = "";
+  clearSearchBtn.classList.add("hidden");
+  applyFilters();
+  searchInput.focus();
+});
 
 filterRadios.forEach((radio) => {
   radio.addEventListener("change", (e) => {
