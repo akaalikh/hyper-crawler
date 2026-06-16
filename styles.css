@@ -16,24 +16,28 @@
 
 :root {
   /* Main Backgrounds */
-  --bg-gradient: linear-gradient(-150deg, #f1f1f1 50%,  #ff7700 110%); /* Soft, non-boring gradient */
-  --container-bg: #ffffff; /* Clean white for the app interface */
-  
-  /* Text */
-  --text-main: #2B3439; /* Dark Charcoal for primary text */
-  --text-muted: #6B747A; /* Muted slate for secondary text */
-    
-  /* Accents */
-  --accent: #F5F5F7; /* Apple-style soft gray for inputs and subtle backgrounds */
-  --accent-warm: #F7E8D2; /* Palette beige for tags */
-  
-  /* Brand/Action Colors */
-  --brand-primary: #E2A425; /* Golden yellow */
-  --brand-secondary: #D27728; /* Burnt orange */
-  --brand-gradient: linear-gradient(135deg, #E2A425 0%, #D27728 100%); /* Action gradient */
+  --bg-gradient: linear-gradient(-150deg, #f1f1f1 50%, #ff7700 110%);
+  --container-bg: #ffffff;
 
-  --font-regular: "Montserrat-Regular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-bold: "Montserrat-Bold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* Text */
+  --text-main: #2b3439;
+  --text-muted: #6b747a;
+
+  /* Accents */
+  --accent: #f5f5f7;
+  --accent-warm: #f7e8d2;
+
+  /* Brand/Action Colors */
+  --brand-primary: #e2a425;
+  --brand-secondary: #d27728;
+  --brand-gradient: linear-gradient(135deg, #e2a425 0%, #d27728 100%);
+
+  --font-regular:
+    "Montserrat-Regular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  --font-bold:
+    "Montserrat-Bold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
 }
 
 body {
@@ -42,7 +46,7 @@ body {
   color: var(--text-main);
   margin: 0;
   padding: 2.5rem 1rem;
-  min-height: 100vh; /* Ensures the gradient covers the full screen */
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -51,7 +55,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, .summary-stat, .result-header > span:first-child {
+h1,
+h2,
+.summary-stat,
+.result-header > span:first-child {
   font-family: var(--font-bold);
 }
 
@@ -60,12 +67,11 @@ h1, h2, .summary-stat, .result-header > span:first-child {
   max-width: 760px;
   background: var(--container-bg);
   border-radius: 24px;
-  box-shadow: 0 20px 40px rgba(43, 52, 57, 0.08); 
+  box-shadow: 0 20px 40px rgba(43, 52, 57, 0.08);
   padding: 2.5rem 2.5rem 1.5rem 2.5rem;
   box-sizing: border-box;
 }
 
-/* Header */
 .header-container {
   display: flex;
   justify-content: space-between;
@@ -77,8 +83,8 @@ h1 {
   font-size: 1.8rem;
   letter-spacing: -0.5px;
   margin: 0;
-  /* Applying the brand gradient to the title */
   background: var(--brand-gradient);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
@@ -97,12 +103,10 @@ h1 {
 }
 
 .header-request-btn:hover {
-  /* Orange hover effect */
   background-color: var(--brand-secondary);
   color: #ffffff;
 }
 
-/* Inputs */
 .search-wrapper {
   margin-bottom: 1.5rem;
   position: relative;
@@ -160,7 +164,7 @@ input[type="email"]:focus,
 textarea:focus {
   background-color: var(--container-bg);
   border-color: var(--brand-primary);
-  box-shadow: 0 0 0 1px var(--brand-primary); 
+  box-shadow: 0 0 0 1px var(--brand-primary);
 }
 
 textarea {
@@ -168,7 +172,6 @@ textarea {
   min-height: 100px;
 }
 
-/* Segmented Control (Filters) */
 .filter-container {
   display: flex;
   background-color: var(--accent);
@@ -176,6 +179,32 @@ textarea {
   padding: 4px;
   margin: 0 auto 1.5rem auto;
   max-width: 400px;
+  position: relative;
+  z-index: 1;
+}
+
+.filter-container::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc((100% - 8px) / 3);
+  background-color: var(--container-bg);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(43, 52, 57, 0.08);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
+}
+
+.filter-container:has(input[value="All"]:checked)::before {
+  transform: translateX(0);
+}
+.filter-container:has(input[value="Software"]:checked)::before {
+  transform: translateX(100%);
+}
+.filter-container:has(input[value="Course"]:checked)::before {
+  transform: translateX(200%);
 }
 
 .filter-option {
@@ -196,17 +225,13 @@ textarea {
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--text-muted);
-  transition: all 0.2s ease;
+  transition: color 0.1s ease;
 }
 
 .filter-option input:checked + .filter-label {
-  background-color: var(--container-bg);
-  /* Orange color for selected filter */
   color: var(--brand-secondary);
-  box-shadow: 0 2px 8px rgba(43, 52, 57, 0.08);
 }
 
-/* Summary Dashboard */
 #summary {
   background-color: var(--accent);
   border-radius: 20px;
@@ -246,11 +271,11 @@ textarea {
   font-size: 2rem;
   letter-spacing: -1px;
   background: var(--brand-gradient);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* Results List */
 #results {
   list-style: none;
   padding: 0;
@@ -327,7 +352,6 @@ textarea {
   font-weight: 600;
 }
 
-/* Buttons */
 .request-btn,
 .submit-btn {
   width: 100%;
@@ -340,7 +364,10 @@ textarea {
   border: none;
   border-radius: 16px;
   cursor: pointer;
-  transition: opacity 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.1s ease,
+    box-shadow 0.2s ease;
   box-shadow: 0 4px 12px rgba(210, 119, 40, 0.2);
 }
 
@@ -355,7 +382,6 @@ textarea {
   transform: scale(0.98);
 }
 
-/* Modal */
 .modal {
   position: fixed;
   top: 0;
@@ -386,8 +412,14 @@ textarea {
 }
 
 @keyframes modalFadeIn {
-  from { opacity: 0; transform: scale(0.95) translateY(10px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .modal-header {
@@ -440,11 +472,10 @@ textarea {
   display: none !important;
 }
 
-/* Mobile Responsiveness */
 @media (max-width: 600px) {
   body {
     padding: 0;
-    background: var(--container-bg); /* Setting to solid white on mobile keeps it clean edge-to-edge */
+    background: var(--container-bg);
   }
 
   .container {
@@ -470,12 +501,12 @@ textarea {
   input[type="text"],
   input[type="email"],
   textarea {
-    font-size:0.9rem;
+    font-size: 0.9rem;
     padding: 12px 16px;
   }
 
   .clear-search-btn {
-    top:50%;
+    top: 50%;
     font-size: 1.5rem;
   }
 
@@ -528,13 +559,13 @@ textarea {
     padding: 1.25rem;
     border-radius: 20px;
   }
-  
+
   .request-btn {
     padding: 12px;
     font-size: 0.9rem;
   }
-  
-   .submit-btn {
+
+  .submit-btn {
     padding: 12px;
     font-size: 0.9rem;
   }
