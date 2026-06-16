@@ -8,7 +8,7 @@ const COURSES_CSV_URL = `${BASE_URL}&gid=291500461`;
 const SYNC_INTERVAL_MS = 300000;
 
 let combinedData = [];
-let currentTypeFilter = "All"; 
+let currentTypeFilter = "All";
 
 // DOM Elements
 const searchInput = document.getElementById("searchInput");
@@ -281,6 +281,8 @@ requestForm.addEventListener("submit", async (e) => {
 });
 
 generalRequestBtn.addEventListener("click", () => {
+  requestStatus.classList.add("hidden");
+  requestStatus.textContent = "";
   const requestInput = document.getElementById("requestInput");
   requestInput.value = "";
   const requestModal = document.getElementById("requestModal");
